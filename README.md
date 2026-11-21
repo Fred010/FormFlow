@@ -4,26 +4,30 @@ Form builder and submission management tool, split into three independently depl
 
 | Tier | Path | Stack |
 | --- | --- | --- |
-| Frontend | `frontend/` | React + TypeScript, Vite, Tailwind CSS v4, Lucide icons |
+| Frontend | `frontend/` | React + TypeScript, Vite, Tailwind CSS, Lucide icons |
 | Backend | `backend/` | Node.js + TypeScript, Express 5, `pg` (raw parameterized SQL) |
 | Database | `database/` | PostgreSQL 13+ (`init.sql`: schema, indexes, seed form with 2 responses) |
 
 ## Quick start
 
 ```bash
-# 1. Database (any Postgres 13+; Docker example)
+# 1. Database (any Postgres 13+; Docker example): spin up for the database container
 docker run -d --name formflow-db -p 5432:5432 \
   -e POSTGRES_USER=formflow -e POSTGRES_PASSWORD=formflow -e POSTGRES_DB=formflow \
   -v "$PWD/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro" postgres:16-alpine
 # or: psql "$DATABASE_URL" -f database/init.sql
+verify the container is running: `docker ps`
 
 # 2. Env files
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
+backend/.env
+frontend/.env
 
 # 3. Install + run both tiers (frontend :5173, backend :4000)
 npm run install:all
 npm run dev
+
+When everything works:
+open `http://localhost:5173` in your browser
 ```
 
 Vite proxies `/api` to `http://localhost:4000` in dev.
